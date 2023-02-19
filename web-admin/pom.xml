@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.shipi</groupId>
+        <artifactId>Shipi_Zimmer</artifactId>
+        <version>1.0</version>
+    </parent>
+
+    <artifactId>web-admin</artifactId>
+
+
+<!--    因为我的 IDEA 是 2020版本以上， 所以 创建会 自动生成 这个 properties 标签-->
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+
+    <!--注意： web-admin is a web model, 所以 打包方式 不一样， 应该是 war， 默认是 jar-->
+<!--    假如你 没有写 war 方式， 那么 webapp 这个文件夹 就不会有 蓝色的小圆点的提示-->
+    <packaging>war</packaging>
+
+
+    <!--web-admin 模块 要依赖 于 两个兄弟模块-->
+    <!-- 那 为了找到  com.atguigu 下面的 两个校内各地模块， 需要 父工程 install(在 Maven-> lifecycle-> install) 一下， 以便 maven 本地文件夹里面会出现   -->
+    <dependencies>
+        <dependency>
+            <groupId>com.shipi</groupId>
+            <artifactId>common-util</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.shipi</groupId>
+            <artifactId>model</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+
+
+    <!--这里便是 tomcat 服务器的 配置, 但是 这里用的 服务器是 jetty-->
+    <build>
+        <!--配一个 插件-->
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.4.15.v20190215</version>
+                <configuration>
+                    <!-- 如果检测到项目有更改则自动热部署，每隔n秒扫描一次。默认为0，即不扫描-->
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <webAppConfig>
+                        <!--指定web项目的根路径，默认为/ -->
+                        <contextPath>/</contextPath>
+                    </webAppConfig>
+                    <httpConnector>
+                        <!--端口号，默认 8080-->
+                        <port>8000</port>
+                    </httpConnector>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>

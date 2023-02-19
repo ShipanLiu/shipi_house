@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.shipi</groupId>
+    <artifactId>Shipi_Zimmer</artifactId>
+    <version>1.0</version>
+    <packaging>pom</packaging>
+
+
+<!--    这里是 聚合，  父工程 install 一下， 三个 模块 便都会 出现 在 父工程folder 里面-->
+<!--    folder 是在  mvn 的 repo 里面： D:\Java_related_Software\mavan_repo_resource\com\shipi-->
+    <modules>
+        <module>common-util</module>
+        <module>model</module>
+        <module>web-admin</module>
+    </modules>
+
+    <!--    </dependencies>-->
+
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!--这里面是 自定义的 标签 来指定 java 的版本的。-->
+        <java.version>1.8</java.version>
+        <spring.version>5.2.7.RELEASE</spring.version>
+        <thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
+        <pagehelper.version>4.1.4</pagehelper.version>
+        <servlet-api.version>2.5</servlet-api.version>
+        <!--将 java 对象 转化成 json 对象-->
+        <fastjson.version>1.2.29</fastjson.version>
+        <mybatis.version>3.4.5</mybatis.version>
+        <!--mybatias 和 spring 整合的 版本-->
+        <mybatis.spring.version>1.3.1</mybatis.spring.version>
+        <!--mysql 的 驱动包        -->
+        <mysql.version>8.0.18</mysql.version>
+        <druid.version>1.1.12</druid.version>
+        <commons-fileupload.version>1.3.1</commons-fileupload.version>
+<!--        下面的两个 跟日志 相关-->
+        <slf4j-version>1.7.30</slf4j-version>
+        <logback-version>1.2.3</logback-version>
+    </properties>
+
+
+
+    <!--    父工程进行依赖管理 -》 为了继承 -》 在子工程 的 pom 里面就不用写 version number了 -->
+    <!--因为是在 dependencyManagement 名下， 所以 里面的 包不会导入当前工程 -->
+    <!--子项目 需要 重新指定 以依赖， 只是 不用写 版本号-->
+    <dependencyManagement>
+        <dependencies>
+            <!-- SpringMVC相关 -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <!--   使用 properties 里面定义的 shortcut             -->
+                <version>${spring.version}</version>
+            </dependency>
+            <!--spring封装的jdbc数据库访问-->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jdbc</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-tx</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <!--Spring提供的对AspectJ框架的整合-->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aspects</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <!--用于spring测试-->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <!--用于springMVC模板-->
+            <dependency>
+                <groupId>org.thymeleaf</groupId>
+                <artifactId>thymeleaf-spring5</artifactId>
+                <version>${thymeleaf.version}</version>
+            </dependency>
+
+            <!--mybatis的分页插件-->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper</artifactId>
+                <version>${pagehelper.version}</version>
+            </dependency>
+            <!-- Mybatis -->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+            <!-- Mybatis与Spring整合所需要的jar包 -->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+                <version>${mybatis.spring.version}</version>
+            </dependency>
+            <!-- MySql 的 驱动包 -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+            <!-- 连接池 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <!-- 文件上传组件 -->
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>${commons-fileupload.version}</version>
+            </dependency>
+
+            <!-- fastjson， java转成 json 的 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+            <!-- 日志 -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback-version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!--    这里 单独导了一个 servlet 的api， 只有 放到 dependencies 里面的包 才会导入 这个工程， 上面 放入到</dependencyManagement> 是不会被导入的 -->
+    <!--    因为这是 一个父工程， 所以 所有的子工程 自动会有 javax.servlet 这个包 -->
+    <dependencies>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>${servlet-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- java编译插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>
