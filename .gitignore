@@ -1,1 +1,1 @@
-*.properties
+*.properties   #ignore information about mysql connection
