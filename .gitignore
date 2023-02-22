@@ -1,1 +1,2 @@
 *.properties   #ignore information about mysql connection
+/web-admin/src/main/resources/db.properties

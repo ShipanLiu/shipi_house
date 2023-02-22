@@ -48,8 +48,10 @@
 
 
     <!--    父工程进行依赖管理 -》 为了继承 -》 在子工程 的 pom 里面就不用写 version number了 -->
-    <!--因为是在 dependencyManagement 名下， 所以 里面的 包不会导入当前工程 -->
-    <!--子项目 需要 重新指定 以依赖， 只是 不用写 版本号-->
+    <!--因为是在 dependencyManagement 名下， 所以 里面的 包不会导入当前父工程，  -->
+    <!--子项目 需要 重新指定 以依赖， 只是 不用写 版本号 
+       __> becasue you do not use "dependencyManagement" in
+       the child pom, so 会导入 child 工程 -->
     <dependencyManagement>
         <dependencies>
             <!-- SpringMVC相关 -->

@@ -17,4 +17,48 @@
         where is_deleted = 0
     </select>
 
+<!--    添加角色, id的名字 要和 RoleDao 里面 定义的方法的名义 对应 -->
+<!--    会自动解析 role 里 的 属性， 对应到 values 里面-->
+    <insert id="insert">
+        insert into acl_role(role_name,role_code,description)
+        values(#{roleName},#{roleCode},#{description})
+    </insert>
+
+<!--     删除角色, 不是真正的 删除， 而是把 is_deleted 设置成1-->
+<!--    this id="delete" corresponds to the "delete" method in RoleDao   这个 dao 文件夹的意思 就是 盛放mapper 的接口-->
+    <update id="delete">
+        update acl_role
+        set is_deleted = 1, update_time = now()
+        where id = #{roleID}
+    </update>
+    
+<!--    想要更新： step1： query-->
+
+    <select id="getById" resultType="com.shipi.entity.Role">
+        <include refid="columns"></include>
+        from acl_role
+        where id = #{roleID}
+    </select>
+    
+<!--    step2： update-->
+<!--     因为要 判断你 传进来的值，所以 要用一个 动态的sql 来判断一下-->
+<!--    最下面  where id = #{id}  中的 id 本来就是 role 里面的 第一个 attribute，key-->
+<!--    set tag can delete the ',' between "if" and "update_time = now()"-->
+<!--    don't forget the ',' after each if-->
+    <update id="update">
+        update acl_role
+        <set>
+            <if test="roleName != null and roleName != ''">
+                role_name = #{roleName},
+            </if>
+            <if test="roleCode != null and roleCode != ''">
+                role_code = #{roleCode},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            update_time = now()
+        </set>
+        where id = #{id}
+    </update>
 </mapper>
