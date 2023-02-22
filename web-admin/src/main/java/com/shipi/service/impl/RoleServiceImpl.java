@@ -20,4 +20,25 @@ public class RoleServiceImpl implements RoleService {
     public List<Role> findAll() {
         return roleDao.findAll();
     }
+
+    @Override
+    public Integer insert(Role role) {
+        return roleDao.insert(role);
+        // 写完 上面的 方法之后， 就 开始 写mapper映射文件了。
+    }
+
+    @Override
+    public void delete(Long roleID) {
+        roleDao.delete(roleID);
+    }
+
+    @Override
+    public Role getById(Long roleID) {
+        return roleDao.getById(roleID);
+    }
+
+    @Override
+    public void update(Role role) {
+        roleDao.update(role);
+    }
 }

@@ -3,16 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <link rel="shortcut icon" th:href="@{/static/favicon.ico}">
+    <link th:href="@{/static/css/bootstrap.min.css?v=3.3.7}" rel="stylesheet">
+    <link th:href="@{/static/css/font-awesome.css?v=4.4.0}" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link th:href="@{/static/css/plugins/dataTables/dataTables.bootstrap.css}" rel="stylesheet">
+
+    <link th:href="@{/static/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/static/css/style.css?v=4.1.0}" rel="stylesheet">
+
+    <!-- 全局js -->
+    <script th:src="@{/static/js/jquery.min.js?v=2.1.4}"></script>
+    <script th:src="@{/static/js/bootstrap.min.js?v=3.3.7}"></script>
+    <script th:src="@{/static/js/plugins/jeditable/jquery.jeditable.js}"></script>
+    <!-- Data Tables -->
+    <script th:src="@{/static/js/plugins/dataTables/jquery.dataTables.js}"></script>
+    <script th:src="@{/static/js/plugins/dataTables/dataTables.bootstrap.js}"></script>
+<!--    inport the myLayer.js for the tabbar and the animation-->
+    <!-- 弹出层js -->
+    <script th:src="@{/static/js/plugins/layer/layer.min.js}"></script>
+    <script th:src="@{/static/js/myLayer.js}"></script>
 </head>
-<body>
-<table>
-    <tr th:each="item,it : ${list}">
-        <td class="text-center" th:text="${it.count}">11</td>
-        <td th:text="${item.roleName}">22</td>
-        <td th:text="${item.roleCode}">33</td>
-        <td th:text="${item.description}">33</td>
-        <td th:text="${#dates.format(item.createTime,'yyyy-MM-dd HH:mm:ss')}" >33</td>
-    </tr>
-</table>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div>
+<!--                        <button type="button" class="btn btn-sm btn-primary alert">alert</button>-->
+<!--                        <button type="button" class="btn btn-sm btn-primary load">load</button>-->
+<!--                        <button type="button" class="btn btn-sm btn-primary confirm">confirm</button>-->
+<!--                        <button type="button" class="btn btn-sm btn-primary dialog">dialog</button>-->
+<!--                         这里面的 “create” 相当于 一个 id， 用于 和 下面的js 代码进行连接-->
+                        <button type="button" class="btn btn-sm btn-primary create">新增</button>
+                    </div>
+                    <table class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>角色名称</th>
+                            <th>角色编码</th>
+                            <th>描述</th>
+                            <th>创建时间</th>
+                            <th>Operation</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                         <!--  关键：下面的    ${list}   是 提取 modelMap 里面的  “list”                   -->
+                        <tr class="gradeX" th:each="item,it : ${list}">
+                            <td class="text-center" th:text="${it.count}"></td>
+                            <td th:text="${item.roleName}"></td>
+                            <td th:text="${item.roleCode}"></td>
+                            <td th:text="${item.description}"></td>
+                            <td th:text="${#dates.format(item.createTime,'yyyy-MM-dd HH:mm:ss')}" ></td>
+                            <td class="text-center">
+                                <a class="edit" th:attr="data-id=${item.id}">edit</a>
+                                <a class="delete" th:attr="data-id=${item.id}">delete</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="dataTables_info" id="DataTables_Table_0_info" role="alert" aria-live="polite" aria-relevant="all">显示
+                                1 到 10 项，共 57 项
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+                                <ul class="pagination">
+                                    <li class="paginate_button previous disabled" aria-controls="DataTables_Table_0" tabindex="0"
+                                        id="DataTables_Table_0_previous"><a href="#">上一页</a></li>
+                                    <li class="paginate_button active" aria-controls="DataTables_Table_0" tabindex="0"><a href="#">1</a>
+                                    </li>
+                                    <li class="paginate_button " aria-controls="DataTables_Table_0" tabindex="0"><a href="#">2</a></li>
+                                    <li class="paginate_button " aria-controls="DataTables_Table_0" tabindex="0"><a href="#">3</a></li>
+                                    <li class="paginate_button " aria-controls="DataTables_Table_0" tabindex="0"><a href="#">4</a></li>
+                                    <li class="paginate_button " aria-controls="DataTables_Table_0" tabindex="0"><a href="#">5</a></li>
+                                    <li class="paginate_button " aria-controls="DataTables_Table_0" tabindex="0"><a href="#">6</a></li>
+                                    <li class="paginate_button next" aria-controls="DataTables_Table_0" tabindex="0"
+                                        id="DataTables_Table_0_next"><a href="#">下一页</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- opt is a self defined onject from static/myLayer.js-->
+<script th:inline="javascript">
+    $(function(){
+        // $(".alert").on("click",function () {
+        //     opt.alert("测试alert")
+        // });
+        // $(".load").on("click",function () {
+        //     opt.load();
+        // });
+        // $(".confirm").on("click",function(){
+        //     opt.confirm("","删除操作需要确认");
+        // });
+        // $(".dialog").on("click",function () {
+        //     opt.dialog("测试提示框",1);
+        // });
+        $(".create").on("click",function () {
+            // 580,430 are width and height
+            opt.openWin("/role/create","新增",580,430);
+        });
+
+        //  修改 edit 的 click 事件
+        $(".edit").on("click",function () {
+            var id = $(this).attr("data-id");
+            opt.openWin('/role/edit/' + id,'修改',580,430);
+        });
+
+        //  delete
+        $(".delete").on("click",function(){
+            var id = $(this).attr("data-id");
+            opt.confirm('/role/delete/'+id); //  restful request，we do not send a "delect" request, because the
+                                            // html form does not support "delete"
+        });
+    });
+</script>
+
 </body>
 </html>
