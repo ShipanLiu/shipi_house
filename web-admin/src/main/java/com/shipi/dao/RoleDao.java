@@ -1,9 +1,11 @@
 package com.shipi.dao;
 
+import com.github.pagehelper.Page;
 import com.shipi.entity.Role;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 //@Repository("roleDao")
 public interface RoleDao {
@@ -28,4 +30,6 @@ public interface RoleDao {
     void update(Role role);
 
 
+//   Page 继承了 ArrayList， 就是一个list
+    Page<Role> findPage(Map<String, Object> filters);
 }

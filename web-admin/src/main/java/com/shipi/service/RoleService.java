@@ -1,8 +1,10 @@
 package com.shipi.service;
 
+import com.github.pagehelper.PageInfo;
 import com.shipi.entity.Role;
 
 import java.util.List;
+import java.util.Map;
 
 public interface RoleService {
 
@@ -16,4 +18,6 @@ public interface RoleService {
     Role getById(Long roleID);
 
     void update(Role role);
+
+    PageInfo<Role> findPage(Map<String, Object> filters);
 }

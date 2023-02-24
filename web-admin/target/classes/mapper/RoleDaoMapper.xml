@@ -61,4 +61,18 @@
         </set>
         where id = #{id}
     </update>
+
+
+<!--    条件（按照名字）查询  + 分页  -->
+    <select id="findPage" resultType="com.shipi.entity.Role">
+        <include refid="columns"></include>
+        from acl_role
+        <where>
+            <if test="roleName != null and roleName != ''">
+                role_name like "%"#{roleName}"%" and
+            </if>
+            is_deleted = 0
+        </where>
+        order by id desc
+    </select>
 </mapper>

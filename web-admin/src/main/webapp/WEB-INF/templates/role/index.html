@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>列表</title>
 
     <link rel="shortcut icon" th:href="@{/static/favicon.ico}">
     <link th:href="@{/static/css/bootstrap.min.css?v=3.3.7}" rel="stylesheet">
@@ -21,73 +21,94 @@
     <!-- Data Tables -->
     <script th:src="@{/static/js/plugins/dataTables/jquery.dataTables.js}"></script>
     <script th:src="@{/static/js/plugins/dataTables/dataTables.bootstrap.js}"></script>
-<!--    inport the myLayer.js for the tabbar and the animation-->
+
     <!-- 弹出层js -->
     <script th:src="@{/static/js/plugins/layer/layer.min.js}"></script>
     <script th:src="@{/static/js/myLayer.js}"></script>
 </head>
 <body class="gray-bg">
-<div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-content">
-                    <div>
-<!--                        <button type="button" class="btn btn-sm btn-primary alert">alert</button>-->
-<!--                        <button type="button" class="btn btn-sm btn-primary load">load</button>-->
-<!--                        <button type="button" class="btn btn-sm btn-primary confirm">confirm</button>-->
-<!--                        <button type="button" class="btn btn-sm btn-primary dialog">dialog</button>-->
-<!--                         这里面的 “create” 相当于 一个 id， 用于 和 下面的js 代码进行连接-->
-                        <button type="button" class="btn btn-sm btn-primary create">新增</button>
-                    </div>
-                    <table class="table table-striped table-bordered table-hover dataTables-example">
-                        <thead>
-                        <tr>
-                            <th>序号</th>
-                            <th>角色名称</th>
-                            <th>角色编码</th>
-                            <th>描述</th>
-                            <th>创建时间</th>
-                            <th>Operation</th>
-
-                        </tr>
-                        </thead>
-                        <tbody>
-                         <!--  关键：下面的    ${list}   是 提取 modelMap 里面的  “list”                   -->
-                        <tr class="gradeX" th:each="item,it : ${list}">
-                            <td class="text-center" th:text="${it.count}"></td>
-                            <td th:text="${item.roleName}"></td>
-                            <td th:text="${item.roleCode}"></td>
-                            <td th:text="${item.description}"></td>
-                            <td th:text="${#dates.format(item.createTime,'yyyy-MM-dd HH:mm:ss')}" ></td>
-                            <td class="text-center">
-                                <a class="edit" th:attr="data-id=${item.id}">edit</a>
-                                <a class="delete" th:attr="data-id=${item.id}">delete</a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="dataTables_info" id="DataTables_Table_0_info" role="alert" aria-live="polite" aria-relevant="all">显示
-                                1 到 10 项，共 57 项
-                            </div>
+<form id="ec" th:action="@{/role}" method="post">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <table class="table form-table margin-bottom10">
+                            <tr>
+                                <td>
+<!--                                    点击搜索： name="roleName" 就会作为key被 发出去，  对应的值是：th:value -->
+<!--                                th:value： 假如 filters 里面已经有了 key “roleName” ==》 filters.roleName 的 value  ， 否则 是 “”   看 onenote 对应笔记  -->
+                                    <input type="text" name="roleName" th:value="${#maps.containsKey(filters, 'roleName')} ? ${filters.roleName} : ''" placeholder="角色名称" class="input-sm form-control"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-primary" onclick="javascript:document.forms.ec.pageNum.value=1;document.forms.ec.submit();">搜索</button>
+                            <button type="button" class="btn btn-sm btn-primary create">新增</button>
+                            <button type="button" id="loading-example-btn" onclick="javascript:window.location.reload();" class="btn btn-white btn-sm">刷新</button>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
-                                <ul class="pagination">
-                                    <li class="paginate_button previous disabled" aria-controls="DataTables_Table_0" tabindex="0"
-                                        id="DataTables_Table_0_previous"><a href="#">上一页</a></li>
-                                    <li class="paginate_button active" aria-controls="DataTables_Table_0" tabindex="0"><a href="#">1</a>
-                                    </li>
-                                    <li class="paginate_button " aria-controls="DataTables_Table_0" tabindex="0"><a href="#">2</a></li>
-                                    <li class="paginate_button " aria-controls="DataTables_Table_0" tabindex="0"><a href="#">3</a></li>
-                                    <li class="paginate_button " aria-controls="DataTables_Table_0" tabindex="0"><a href="#">4</a></li>
-                                    <li class="paginate_button " aria-controls="DataTables_Table_0" tabindex="0"><a href="#">5</a></li>
-                                    <li class="paginate_button " aria-controls="DataTables_Table_0" tabindex="0"><a href="#">6</a></li>
-                                    <li class="paginate_button next" aria-controls="DataTables_Table_0" tabindex="0"
-                                        id="DataTables_Table_0_next"><a href="#">下一页</a></li>
-                                </ul>
+                        <table class="table table-striped table-bordered table-hover dataTables-example">
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>角色名称</th>
+                                <th>角色编码</th>
+                                <th>描述</th>
+                                <th>创建时间</th>
+                                <th>操作 </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="gradeX" th:each="item,it : ${page.list}">
+                                <td class="text-center" th:text="${it.count}">11</td>
+                                <td th:text="${item.roleName}">22</td>
+                                <td th:text="${item.roleCode}">33</td>
+                                <td th:text="${item.description}">33</td>
+                                <td th:text="${#dates.format(item.createTime,'yyyy-MM-dd HH:mm:ss')}" >33</td>
+                                <td class="text-center">
+                                    <a class="edit" th:attr="data-id=${item.id}">修改</a>
+                                    <a class="delete" th:attr="data-id=${item.id}">删除</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="row">
+                            <input type="hidden" name="pageSize" id="pageSize" th:value="${page.pageSize}"/>
+                            <input type="hidden" name="pageNum" id="pageNum" th:value="${page.pageNum}"/>
+                            <div class="col-sm-6">
+                                <div class="dataTables_info" id="DataTables_Table_0_info" role="alert" aria-live="polite" aria-relevant="all">
+                                    当前第<span th:text="${page.pageNum }"></span>页/共<span th:text="${page.pages }"></span>页&nbsp;&nbsp;共<span
+                                        id="pageTotal" th:text="${page.total }"></span>条记录&nbsp;&nbsp;
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+                                    <ul class="pagination">
+                                        <li class="paginate_button previous" th:if="${!page.isFirstPage}"><a
+                                                href="javascript:document.forms.ec.pageNum.value=1;document.forms.ec.submit();">第一页</a></li>
+                                        <li class="paginate_button previous" th:if="${page.isFirstPage}"><a href="javascript:">第一页</a></li>
+                                        <li class="paginate_button previous" th:if="${!page.isFirstPage}"><a
+                                                th:href="'javascript:document.forms.ec.pageNum.value='+${page.prePage}+';document.forms.ec.submit();'">上一页</a>
+                                        </li>
+                                        <li class="paginate_button previous disabled" th:if="${page.isFirstPage}"><a
+                                                href="javascript:">上一页</a></li>
+                                        <li th:each="i : ${page.navigatepageNums}"
+                                            th:class="${i == page.pageNum } ? 'paginate_button active' : 'paginate_button'">
+                                            <a th:href="'javascript:document.forms.ec.pageNum.value='+${i}+';document.forms.ec.submit();'"><span
+                                                    th:text="${i}"></span></a>
+                                        </li>
+                                        <li class="paginate_button next" th:if="${!page.isLastPage}"><a
+                                                th:href="'javascript:document.forms.ec.pageNum.value='+${page.nextPage}+';document.forms.ec.submit();'">下一页</a>
+                                        </li>
+                                        <li class="paginate_button next disabled" th:if="${page.isLastPage}"><a href="javascript:">下一页</a>
+                                        </li>
+                                        <li class="paginate_button next" th:if="${!page.isLastPage}"><a
+                                                th:href="'javascript:document.forms.ec.pageNum.value='+${page.pages}+';document.forms.ec.submit();'">尾页</a>
+                                        </li>
+                                        <li class="paginate_button next" th:if="${page.isLastPage}"><a href="javascript:">尾页</a></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -95,42 +116,25 @@
             </div>
         </div>
     </div>
-</div>
-
-<!-- opt is a self defined onject from static/myLayer.js-->
+</form>
 <script th:inline="javascript">
     $(function(){
-        // $(".alert").on("click",function () {
-        //     opt.alert("测试alert")
-        // });
-        // $(".load").on("click",function () {
-        //     opt.load();
-        // });
-        // $(".confirm").on("click",function(){
-        //     opt.confirm("","删除操作需要确认");
-        // });
-        // $(".dialog").on("click",function () {
-        //     opt.dialog("测试提示框",1);
-        // });
+        //去添加角色的页面
         $(".create").on("click",function () {
-            // 580,430 are width and height
             opt.openWin("/role/create","新增",580,430);
         });
-
-        //  修改 edit 的 click 事件
+        //去修改角色的页面
         $(".edit").on("click",function () {
             var id = $(this).attr("data-id");
             opt.openWin('/role/edit/' + id,'修改',580,430);
         });
-
-        //  delete
+        //删除角色
         $(".delete").on("click",function(){
             var id = $(this).attr("data-id");
-            opt.confirm('/role/delete/'+id); //  restful request，we do not send a "delect" request, because the
-                                            // html form does not support "delete"
+            opt.confirm('/role/delete/'+id);
         });
     });
 </script>
-
 </body>
 </html>
+

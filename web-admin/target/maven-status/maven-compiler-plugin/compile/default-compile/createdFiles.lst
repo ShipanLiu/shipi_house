@@ -1,5 +1,5 @@
+com\shipi\controller\IndexController.class
 com\shipi\service\impl\RoleServiceImpl.class
 com\shipi\service\RoleService.class
 com\shipi\controller\RoleController.class
-com\shipi\controller\IndexController.class
 com\shipi\dao\RoleDao.class
