@@ -20,6 +20,7 @@
     </properties>
 
 
+
     <!--注意： web-admin is a web model, 所以 打包方式 不一样， 应该是 war， 默认是 jar-->
 <!--    假如你 没有写 war 方式， 那么 webapp 这个文件夹 就不会有 蓝色的小圆点的提示-->
     <packaging>war</packaging>
